@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "./config/dev.env" });
+require("dotenv").config({ path: "../../config/dev.env" });
 const { createClient } = require("@supabase/supabase-js");
 const User = require("../models/User");
 require("../db/mongoose");
