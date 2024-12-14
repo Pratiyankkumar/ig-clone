@@ -22,7 +22,7 @@ function App() {
   const [visibleUpload, setVisibleUpload] = useState(false);
   const [extend, setExtend] = useState(false);
 
-  console.log(derivedPost);
+  // console.log(derivedPost);
 
   return (
     <BrowserRouter>

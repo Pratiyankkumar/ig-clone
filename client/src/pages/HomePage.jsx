@@ -18,7 +18,7 @@ function HomePage({
 }) {
   if (!isAuthenticated) return <p>Please first authenticate</p>;
 
-  console.log(derivedPost);
+  // console.log(derivedPost);
 
   return (
     <div className="flex min-h-screen bg-white">

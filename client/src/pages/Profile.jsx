@@ -40,7 +40,13 @@ function Profile({
     );
   }
 
-  return <SimpleUserProfile />;
+  return (
+    <SimpleUserProfile
+      derivedPost={derivedPost}
+      setDerivedPost={setDerivedPost}
+      setExtend={setExtend}
+    />
+  );
 }
 
 export default Profile;

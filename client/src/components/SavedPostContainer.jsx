@@ -5,15 +5,10 @@ import { Bookmark } from "lucide-react";
 
 const token = localStorage.getItem("accessToken");
 
-const SavedPostContainer = ({
-  authUser,
-  derivedPost,
-  setDerivedPost,
-  setExtend,
-}) => {
+const SavedPostContainer = ({ authUser, setDerivedPost, setExtend }) => {
   const [savedPosts, setSavedPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  console.log(derivedPost);
+  // console.log(derivedPost);
 
   useEffect(() => {
     const fetchSavedPosts = async () => {

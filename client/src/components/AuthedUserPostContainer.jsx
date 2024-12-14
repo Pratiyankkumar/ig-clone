@@ -3,7 +3,6 @@ import { Camera } from "lucide-react";
 /* eslint-disable react/prop-types */
 export default function AuthedUserPostsContainer({
   posts,
-  derivedPost,
   setDerivedPost,
   setExtend,
 }) {
@@ -16,7 +15,7 @@ export default function AuthedUserPostsContainer({
   // postId,
   // comments,
   // likesCount,
-  console.log(derivedPost);
+  // console.log(derivedPost);
 
   if (posts.posts?.message) {
     return (
