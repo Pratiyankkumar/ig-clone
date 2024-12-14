@@ -1,8 +1,22 @@
 import { Camera } from "lucide-react";
 
 /* eslint-disable react/prop-types */
-export default function AuthedUserPostsContainer({ posts }) {
+export default function AuthedUserPostsContainer({
+  posts,
+  derivedPost,
+  setDerivedPost,
+  setExtend,
+}) {
   // {isLoading, posts}
+  // caption,
+  // createdAt,
+  // likes,
+  // post,
+  // userId,
+  // postId,
+  // comments,
+  // likesCount,
+  console.log(derivedPost);
 
   if (posts.posts?.message) {
     return (
@@ -25,10 +39,23 @@ export default function AuthedUserPostsContainer({ posts }) {
     <div className="py-16 text-center flex flex-row gap-2 flex-wrap">
       {posts.posts.map((post) => (
         <img
-          className="w-60 h-60 object-cover"
+          className="w-60 h-60 object-cover cursor-pointer"
           src={post.post}
           key={post._id}
           alt="prfile-photo"
+          onClick={() => {
+            setExtend(true);
+            setDerivedPost({
+              caption: post.caption,
+              createdAt: post.createdAt,
+              likes: post.likes || [],
+              post: post.post,
+              userId: post.userId,
+              postId: post._id,
+              comments: post.comments,
+              likesCount: post.likes.length || 0,
+            });
+          }}
         />
       ))}
     </div>

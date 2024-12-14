@@ -11,6 +11,11 @@ export default function AuthedUserProfilePage({
   authUser,
   selectButton,
   setSelectButton,
+  derivedPost,
+  setDerivedPost,
+  setDoComment,
+  setExtend,
+  extend,
 }) {
   // eslint-disable-next-line no-unused-vars
   const [image, setImage] = useState(null);
@@ -210,9 +215,26 @@ export default function AuthedUserProfilePage({
 
       {/* Empty State */}
       {selectButton === "posts" && (
-        <AuthedUserPostsContainer posts={posts} authUser={authUser} />
+        <AuthedUserPostsContainer
+          derivedPost={derivedPost}
+          setDerivedPost={setDerivedPost}
+          setDoComment={setDoComment}
+          posts={posts}
+          authUser={authUser}
+          setExtend={setExtend}
+          extend={extend}
+        />
       )}
-      {selectButton === "saved" && <SavedPostContainer authUser={authUser} />}
+      {selectButton === "saved" && (
+        <SavedPostContainer
+          derivedPost={derivedPost}
+          setDerivedPost={setDerivedPost}
+          setDoComment={setDoComment}
+          authUser={authUser}
+          setExtend={setExtend}
+          extend={extend}
+        />
+      )}
     </div>
   );
 }

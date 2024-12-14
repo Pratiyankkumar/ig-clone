@@ -13,8 +13,12 @@ function HomePage({
   visibleUpload,
   setVisibleUpload,
   isAuthenticated,
+  extend,
+  setExtend,
 }) {
   if (!isAuthenticated) return <p>Please first authenticate</p>;
+
+  console.log(derivedPost);
 
   return (
     <div className="flex min-h-screen bg-white">
@@ -26,10 +30,19 @@ function HomePage({
       {/* Main Content */}
       <main className="flex-1 w-full items-center justify-center ml-64 border-r">
         <Outlet /> {/* Renders the content for the current route */}
+        {extend && (
+          <CommentSection
+            derivedPost={derivedPost}
+            setDoComment={setDoComment}
+            setCounter={setCounter}
+            setExtend={setExtend}
+          />
+        )}
         {doComment && (
           <CommentSection
             derivedPost={derivedPost}
             setDoComment={setDoComment}
+            setExtend={setExtend}
             setCounter={setCounter}
           />
         )}

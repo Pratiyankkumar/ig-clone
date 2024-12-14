@@ -5,9 +5,15 @@ import { Bookmark } from "lucide-react";
 
 const token = localStorage.getItem("accessToken");
 
-const SavedPostContainer = ({ authUser }) => {
+const SavedPostContainer = ({
+  authUser,
+  derivedPost,
+  setDerivedPost,
+  setExtend,
+}) => {
   const [savedPosts, setSavedPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  console.log(derivedPost);
 
   useEffect(() => {
     const fetchSavedPosts = async () => {
@@ -68,10 +74,23 @@ const SavedPostContainer = ({ authUser }) => {
     <div className="py-16 text-center flex flex-row gap-2 flex-wrap">
       {savedPosts.map((post) => (
         <img
-          className="w-60 h-60 object-cover"
+          className="w-60 h-60 object-cover cursor-pointer"
           src={post.post}
           key={post._id}
           alt="saved-photo"
+          onClick={() => {
+            setExtend(true);
+            setDerivedPost({
+              caption: post.caption,
+              createdAt: post.createdAt,
+              likes: post.likes || [],
+              post: post.post,
+              userId: post.userId,
+              postId: post._id,
+              comments: post.comments,
+              likesCount: post.likes.length || 0,
+            });
+          }}
         />
       ))}
     </div>

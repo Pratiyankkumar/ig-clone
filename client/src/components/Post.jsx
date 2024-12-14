@@ -12,6 +12,7 @@ import { Link, useParams } from "react-router-dom";
 import { formatTimeDiff } from "../utils/formatTimeDiff";
 import useGetUser from "../hooks/GetUser";
 import { useLike } from "../hooks/useLike";
+import useCheckSave from "../hooks/useCheckSave";
 
 const token = localStorage.getItem("accessToken");
 
@@ -29,8 +30,7 @@ function Post({
   const { id } = useParams();
   const [isAnimating, setIsAnimating] = useState(false);
   const [showOverlayHeart, setShowOverlayHeart] = useState(false);
-  const [save, setSave] = useState(false);
-
+  const { save, setSave } = useCheckSave(postId, token);
   const postUser = useGetUser(userId, token);
 
   const { liked, likesCount, handleLikeAction } = useLike(token, postId, likes);
@@ -51,39 +51,6 @@ function Post({
     setShowOverlayHeart(true);
     setTimeout(() => setShowOverlayHeart(false), 2000);
   }
-
-  useEffect(() => {
-    async function checkSavedPost() {
-      try {
-        const req = await fetch(`http://localhost:5000/user/saved/${postId}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-
-        // Silent handling of 404 cases
-        if (req.status === 404) {
-          setSave(false);
-          return;
-        }
-
-        // Handle other potential error status codes
-        if (!req.ok) {
-          return;
-        }
-
-        const res = await req.json();
-        setSave(res.message === true);
-      } catch (error) {
-        // Silently handle any network errors
-        setSave(false);
-      }
-    }
-
-    checkSavedPost();
-  }, [postId]);
 
   async function handleSave() {
     try {

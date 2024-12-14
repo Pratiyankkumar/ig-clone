@@ -15,10 +15,12 @@ import { useEffect, useState } from "react";
 import { useLike } from "../hooks/useLike";
 import { ModernLoader } from "./ModernLoader";
 import { useGetPost } from "../hooks/GetPost";
+import { useAuthUser } from "../hooks/GetAuthUser";
+import useCheckSave from "../hooks/useCheckSave";
 
 const token = localStorage.getItem("accessToken");
 
-function CommentSection({ setDoComment, derivedPost, setCounter }) {
+function CommentSection({ setDoComment, derivedPost, setCounter, setExtend }) {
   const postUser = useGetUser(derivedPost.userId, token);
   const [showOverlayHeart, setShowOverlayHeart] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -26,13 +28,20 @@ function CommentSection({ setDoComment, derivedPost, setCounter }) {
   const [localComments, setLocalComments] = useState([]);
   const postId = derivedPost.postId;
 
+  const { save, setSave } = useCheckSave(postId, token);
+
+  // Fetch the latest post data including likes and comments
   const { post, isLoading, fetchPost } = useGetPost(postId, token, derivedPost);
 
+  // eslint-disable-next-line no-unused-vars
+  const { authUser, isLoading: userIsLoading } = useAuthUser(token);
+
+  // Initialize local state with the latest post data
   useEffect(() => {
     if (post?.comments) {
       setLocalComments(post.comments);
     }
-  }, [post.comments]);
+  }, [post?.comments]);
 
   function handleCommentDelete(commentId) {
     setLocalComments((prevComments) =>
@@ -59,9 +68,8 @@ function CommentSection({ setDoComment, derivedPost, setCounter }) {
       const response = await postCommentReq.json();
 
       if (response) {
-        // Clear the comment input
         setComment("");
-        // Fetch the updated post to show the new comment
+        // Fetch the updated post to sync the latest data
         await fetchPost();
       }
     } catch (error) {
@@ -69,23 +77,27 @@ function CommentSection({ setDoComment, derivedPost, setCounter }) {
     }
   }
 
-  let { liked, likesCount, handleLikeAction } = useLike(
+  // Use the latest post data for likes
+  // eslint-disable-next-line no-unused-vars
+  const { liked, likesCount, handleLikeAction } = useLike(
     token,
     postId,
-    derivedPost.likes
+    post?.likes || derivedPost.likes || []
   );
-
-  likesCount = derivedPost.likesCount;
 
   async function handleLike() {
     await handleLikeAction();
     setIsAnimating(true);
     setTimeout(() => setIsAnimating(false), 300);
+    // Fetch the updated post to sync the latest like status
+    await fetchPost();
   }
 
   async function handleDoubleClick() {
     if (!liked) {
       await handleLikeAction();
+      // Fetch the updated post to sync the latest like status
+      await fetchPost();
     }
 
     setShowOverlayHeart(true);
@@ -111,6 +123,39 @@ function CommentSection({ setDoComment, derivedPost, setCounter }) {
     );
   }
 
+  // Use the latest post data when rendering
+  // eslint-disable-next-line no-unused-vars
+  const currentPost = post || derivedPost;
+  const currentLikesCount = post?.likes?.length || derivedPost.likesCount || 0;
+
+  async function handleSave() {
+    try {
+      const endpoint = save
+        ? `http://localhost:5000/user/unsave/${postId}`
+        : `http://localhost:5000/user/save/${postId}`;
+
+      const req = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!req.ok) {
+        console.log("Failed to save/unsave post");
+        return;
+      }
+
+      // Toggle the save state after successful request
+      setSave((prevSave) => !prevSave);
+      // eslint-disable-next-line no-unused-vars
+    } catch (error) {
+      // Handle any network errors silently
+      console.log("Error saving/unsaving post");
+    }
+  }
+
   return (
     <div
       className="w-full h-screen flex items-center justify-center fixed top-0 right-0"
@@ -119,6 +164,7 @@ function CommentSection({ setDoComment, derivedPost, setCounter }) {
       <X
         onClick={() => {
           setDoComment(false);
+          setExtend(false);
           setCounter((count) => count + 1);
         }}
         className="fixed top-4 right-4 text-white cursor-pointer"
@@ -233,12 +279,16 @@ function CommentSection({ setDoComment, derivedPost, setCounter }) {
                   </button>
                 </div>
                 <button>
-                  <Bookmark className="h-6 w-6" />
+                  <Bookmark
+                    onClick={handleSave}
+                    fill={`${save ? "black" : "none"}`}
+                    className="h-6 w-6 transition-colors duration-300 ease-in-out"
+                  />
                 </button>
               </div>
               <div className="">
                 <span className="font-semibold text-sm">
-                  {likesCount} likes
+                  {currentLikesCount} likes
                 </span>
               </div>
               <span className="text-gray-500 text-xs">

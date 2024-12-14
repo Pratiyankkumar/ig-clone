@@ -20,6 +20,7 @@ function App() {
   // eslint-disable-next-line no-unused-vars
   const [counter, setCounter] = useState(0);
   const [visibleUpload, setVisibleUpload] = useState(false);
+  const [extend, setExtend] = useState(false);
 
   console.log(derivedPost);
 
@@ -39,6 +40,8 @@ function App() {
               setCounter={setCounter}
               visibleUpload={visibleUpload}
               setVisibleUpload={setVisibleUpload}
+              extend={extend}
+              setExtend={setExtend}
             />
           }
         >
@@ -58,7 +61,18 @@ function App() {
           <Route path="reels" element={<p>reels</p>} />
           <Route path="messages" element={<MessagesPage />} />
           <Route path="notifications" element={<p>notifications</p>} />
-          <Route path="profile/:id" element={<Profile />} />
+          <Route
+            path="profile/:id"
+            element={
+              <Profile
+                derivedPost={derivedPost}
+                setDerivedPost={setDerivedPost}
+                setDoComment={setDoComment}
+                setExtend={setExtend}
+                extend={extend}
+              />
+            }
+          />
           {/* Renders at `/search` */}
         </Route>
         {/* Other Routes */}

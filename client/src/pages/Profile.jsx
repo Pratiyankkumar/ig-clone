@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { useParams } from "react-router-dom";
 import { useAuthUser } from "../hooks/GetAuthUser";
 import { ModernLoader } from "../components/ModernLoader";
@@ -7,7 +9,13 @@ import SimpleUserProfile from "../components/SimpleUserProfile";
 
 const token = localStorage.getItem("accessToken");
 
-function Profile() {
+function Profile({
+  derivedPost,
+  setDerivedPost,
+  setDoComment,
+  setExtend,
+  extend,
+}) {
   const [selectButton, setSelectButton] = useState("posts");
 
   const { id } = useParams();
@@ -25,6 +33,9 @@ function Profile() {
         selectButton={selectButton}
         setSelectButton={setSelectButton}
         authUser={authUser}
+        derivedPost={derivedPost}
+        setDerivedPost={setDerivedPost}
+        setExtend={setExtend}
       />
     );
   }

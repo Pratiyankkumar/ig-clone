@@ -1,9 +1,21 @@
+/* eslint-disable react/prop-types */
 import { Camera, Plus } from "lucide-react";
 import { useParams } from "react-router-dom";
+import { useGetUsersPost } from "../hooks/useGetUserPosts";
+import { ModernLoader } from "./ModernLoader";
+import useGetUser from "../hooks/GetUser";
+
+const token = localStorage.getItem("accessToken");
 
 function SimpleUserProfile() {
-  const { id } = useParams();
-  console.log(id);
+  const { id: userId } = useParams();
+
+  const { posts, isLoading } = useGetUsersPost(userId, token);
+  const user = useGetUser(userId, token);
+
+  console.log(user);
+
+  console.log(posts);
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -12,14 +24,14 @@ function SimpleUserProfile() {
       {/* Profile Section */}
       <div className="flex flex-col md:flex-row items-start gap-8 mb-8">
         {/* Profile Picture */}
-        <div className="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center">
-          <Camera className="w-8 h-8 text-gray-400" />
+        <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+          <img src={user.profilePic} alt="" />
         </div>
 
         {/* Profile Info */}
         <div className="flex-1">
           <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">
-            <h1 className="text-xl">pratiyank_</h1>
+            <h1 className="text-xl">{user.userName}</h1>
             <div className="flex gap-2">
               <button className="px-4 py-1.5 bg-primary text-white rounded-md text-sm font-medium">
                 Follow
@@ -33,7 +45,7 @@ function SimpleUserProfile() {
           {/* Stats */}
           <div className="flex gap-6 mb-4">
             <div>
-              <span className="font-semibold">0</span> posts
+              <span className="font-semibold">{posts.length || 0}</span> posts
             </div>
             <div>
               <span className="font-semibold">29</span> followers
@@ -45,7 +57,7 @@ function SimpleUserProfile() {
 
           {/* Bio */}
           <div>
-            <h2 className="font-semibold">Pratiyank</h2>
+            <h2 className="font-semibold">{user.name}</h2>
             <a
               href="https://github.com/Pratiyankkumar"
               className="text-blue-600 hover:underline"
@@ -74,12 +86,34 @@ function SimpleUserProfile() {
       </div>
 
       {/* Empty State */}
+      <SimpleUserPostContainer posts={posts} isLoading={isLoading} />
+    </div>
+  );
+}
+
+function SimpleUserPostContainer({ posts, isLoading }) {
+  isLoading && <ModernLoader />;
+  if (posts.length === 0) {
+    return (
       <div className="py-16 text-center">
         <div className="inline-flex items-center justify-center w-24 h-24 rounded-full border-2 border-black mb-4">
           <Camera className="w-12 h-12" />
         </div>
         <h2 className="text-3xl font-bold mb-4">No Posts Yet</h2>
       </div>
+    );
+  }
+
+  return (
+    <div className="py-16 text-center flex flex-row gap-2 flex-wrap">
+      {posts.map((post) => (
+        <img
+          className="w-60 h-60 object-cover"
+          src={post.post}
+          key={post._id}
+          alt="prfile-photo"
+        />
+      ))}
     </div>
   );
 }
