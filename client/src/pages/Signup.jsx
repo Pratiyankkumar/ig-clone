@@ -1,8 +1,11 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { PostContext } from "../App";
 
-function Signup({ setiIsAuthenticated }) {
+function Signup() {
+  const { setiIsAuthenticated } = useContext(PostContext);
+
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({

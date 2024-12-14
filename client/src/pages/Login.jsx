@@ -1,9 +1,12 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import Error from "../components/Error";
+import { PostContext } from "../App";
 
-function Login({ setiIsAuthenticated }) {
+function Login() {
+  const { setiIsAuthenticated } = useContext(PostContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErroMessage] = useState("");

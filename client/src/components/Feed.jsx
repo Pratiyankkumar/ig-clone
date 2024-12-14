@@ -3,13 +3,16 @@ import Post from "./Post";
 import Stories from "./Stories";
 import RightSidebar from "./RightSidebar";
 import { ModernLoader } from "./ModernLoader";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import io from "socket.io-client";
+import { PostContext } from "../App";
 
 const token = localStorage.getItem("accessToken");
 const socket = io("http://localhost:5000");
 
-function Feed({ setDoComment, derivedPost, setDerivedPost }) {
+function Feed() {
+  const { setDoComment, derivedPost, setDerivedPost } = useContext(PostContext);
+
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [triggerFetch, setTriggerFetch] = useState(0);

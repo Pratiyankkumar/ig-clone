@@ -3,19 +3,23 @@ import { Outlet } from "react-router-dom";
 import LeftSidebar from "../components/LeftSidebar";
 import CommentSection from "../components/CommentSection";
 import UploadUI from "../components/Upload";
+import { useContext } from "react";
+import { PostContext } from "../App";
 
-function HomePage({
-  setiIsAuthenticated,
-  doComment,
-  setDoComment,
-  derivedPost,
-  setCounter,
-  visibleUpload,
-  setVisibleUpload,
-  isAuthenticated,
-  extend,
-  setExtend,
-}) {
+function HomePage() {
+  const {
+    setiIsAuthenticated,
+    doComment,
+    setDoComment,
+    derivedPost,
+    setCounter,
+    visibleUpload,
+    setVisibleUpload,
+    isAuthenticated,
+    extend,
+    setExtend,
+  } = useContext(PostContext);
+
   if (!isAuthenticated) return <p>Please first authenticate</p>;
 
   // console.log(derivedPost);

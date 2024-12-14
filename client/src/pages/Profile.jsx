@@ -3,19 +3,16 @@
 import { useParams } from "react-router-dom";
 import { useAuthUser } from "../hooks/GetAuthUser";
 import { ModernLoader } from "../components/ModernLoader";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import AuthedUserProfilePage from "../components/AuthedUserProfile";
 import SimpleUserProfile from "../components/SimpleUserProfile";
+import { PostContext } from "../App";
 
 const token = localStorage.getItem("accessToken");
 
-function Profile({
-  derivedPost,
-  setDerivedPost,
-  setDoComment,
-  setExtend,
-  extend,
-}) {
+function Profile() {
+  const { derivedPost, setDerivedPost, setExtend } = useContext(PostContext);
+
   const [selectButton, setSelectButton] = useState("posts");
 
   const { id } = useParams();
