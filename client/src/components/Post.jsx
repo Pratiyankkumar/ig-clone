@@ -185,7 +185,9 @@ function Post({
                 <FollowButton
                   onClick={handleFollow}
                   styles="px-2 py-1 text-primary font-semibold ml-2 text-sm"
-                />
+                >
+                  Follow
+                </FollowButton>
               )}
             </div>
           </div>

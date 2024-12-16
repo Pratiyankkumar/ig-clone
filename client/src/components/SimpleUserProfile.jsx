@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { useGetUsersPost } from "../hooks/useGetUserPosts";
 import { ModernLoader } from "./ModernLoader";
 import useGetUser from "../hooks/GetUser";
+import FollowButton from "./FollowButton";
+import { useEffect, useState } from "react";
 
 const token = localStorage.getItem("accessToken");
 
@@ -12,8 +14,56 @@ function SimpleUserProfile({ derivedPost, setDerivedPost, setExtend }) {
 
   const { posts, isLoading } = useGetUsersPost(userId, token);
   const user = useGetUser(userId, token);
+  const [follow, setFollow] = useState(false);
 
   console.log(user);
+
+  useEffect(() => {
+    async function checkIsFollowing() {
+      const checkReq = await fetch(
+        `http://localhost:5000/user/isfollowing/${userId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const res = await checkReq.json();
+
+      if (res.following === true) {
+        return setFollow(true);
+      }
+
+      setFollow(false);
+    }
+
+    checkIsFollowing();
+  }, [userId]);
+
+  async function handleClickFollowButton() {
+    const endpoint = follow
+      ? `http://localhost:5000/user/unfollow/${userId}`
+      : `http://localhost:5000/user/follow/${userId}`;
+
+    const req = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const res = await req.json();
+
+    console.log(res);
+
+    if (req.status === 200) {
+      setFollow((f) => !f);
+    }
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -31,9 +81,14 @@ function SimpleUserProfile({ derivedPost, setDerivedPost, setExtend }) {
           <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">
             <h1 className="text-xl">{user.userName}</h1>
             <div className="flex gap-2">
-              <button className="px-4 py-1.5 bg-primary text-white rounded-md text-sm font-medium">
-                Follow
-              </button>
+              <FollowButton
+                styles={`px-4 py-1.5 ${
+                  follow ? "bg-secondary text-black" : "bg-primary text-white"
+                }  rounded-md text-sm font-medium`}
+                onClick={handleClickFollowButton}
+              >
+                {follow ? "Following" : "Follow"}
+              </FollowButton>
               <button className="px-4 py-1.5 bg-gray-100 rounded-md text-sm font-medium">
                 Message
               </button>

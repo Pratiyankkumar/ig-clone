@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
-function FollowButton({ styles, onClick }) {
+function FollowButton({ styles, onClick, children }) {
   return (
     <button onClick={onClick} className={styles}>
-      Follow
+      {children}
     </button>
   );
 }
