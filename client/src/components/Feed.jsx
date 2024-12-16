@@ -63,6 +63,10 @@ function Feed() {
     };
   }, [triggerFetch]); // Empty dependency array since we want this to run once on mount
 
+  {
+    posts.length === 0 && <p>There are no posts here</p>;
+  }
+
   return (
     <div className="flex flex-row relative justify-evenly">
       {isLoading && <ModernLoader size={80} color="#10b981" />}

@@ -13,6 +13,8 @@ import { formatTimeDiff } from "../utils/formatTimeDiff";
 import useGetUser from "../hooks/GetUser";
 import { useLike } from "../hooks/useLike";
 import useCheckSave from "../hooks/useCheckSave";
+import FollowButton from "./FollowButton";
+import { useAuthUser } from "../hooks/GetAuthUser";
 
 const token = localStorage.getItem("accessToken");
 
@@ -32,8 +34,11 @@ function Post({
   const [showOverlayHeart, setShowOverlayHeart] = useState(false);
   const { save, setSave } = useCheckSave(postId, token);
   const postUser = useGetUser(userId, token);
+  const [showFollowButton, setShowFollowButton] = useState(false);
 
   const { liked, likesCount, handleLikeAction } = useLike(token, postId, likes);
+
+  const { authUser } = useAuthUser(token);
 
   async function handleLike() {
     console.log(likes);
@@ -76,6 +81,56 @@ function Post({
     } catch (error) {
       // Handle any network errors silently
       console.log("Error saving/unsaving post");
+    }
+  }
+
+  useEffect(() => {
+    const shouldHideFollowButton = authUser._id === userId;
+
+    if (shouldHideFollowButton) {
+      setShowFollowButton(false);
+    }
+  }, [authUser._id, userId]);
+
+  useEffect(() => {
+    async function checkIsFollowing() {
+      const checkReq = await fetch(
+        `http://localhost:5000/user/isfollowing/${userId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const res = await checkReq.json();
+
+      if (checkReq.status === 200) {
+        setShowFollowButton(!res.following);
+      }
+    }
+
+    checkIsFollowing();
+  }, [userId]);
+
+  async function handleFollow() {
+    const followReq = await fetch(
+      `http://localhost:5000/user/follow/${userId}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const res = await followReq.json();
+
+    if (followReq.status === 200) {
+      setShowFollowButton(false);
     }
   }
 
@@ -126,6 +181,12 @@ function Post({
               <span className="text-sm text-gray-500">
                 {formatTimeDiff(createdAt)}
               </span>
+              {authUser._id !== userId && showFollowButton && (
+                <FollowButton
+                  onClick={handleFollow}
+                  styles="px-2 py-1 text-primary font-semibold ml-2 text-sm"
+                />
+              )}
             </div>
           </div>
           <button className="p-1 rounded-full hover:bg-gray-100">

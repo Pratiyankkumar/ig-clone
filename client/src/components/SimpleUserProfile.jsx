@@ -13,6 +13,8 @@ function SimpleUserProfile({ derivedPost, setDerivedPost, setExtend }) {
   const { posts, isLoading } = useGetUsersPost(userId, token);
   const user = useGetUser(userId, token);
 
+  console.log(user);
+
   return (
     <div className="max-w-4xl mx-auto p-4">
       {/* Header */}
@@ -44,10 +46,16 @@ function SimpleUserProfile({ derivedPost, setDerivedPost, setExtend }) {
               <span className="font-semibold">{posts.length || 0}</span> posts
             </div>
             <div>
-              <span className="font-semibold">29</span> followers
+              <span className="font-semibold mr-1">
+                {user?.followers?.length || 0}
+              </span>
+              followers
             </div>
             <div>
-              <span className="font-semibold">64</span> following
+              <span className="font-semibold mr-1">
+                {user?.following?.length || 0}
+              </span>
+              following
             </div>
           </div>
 

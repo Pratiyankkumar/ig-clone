@@ -1,12 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { PostContext } from "../App";
 
 function Signup() {
   const { setiIsAuthenticated } = useContext(PostContext);
-
-  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -15,12 +13,41 @@ function Signup() {
     userName: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Handle login logic here
     console.log("Login attempted with:", formData);
-    setiIsAuthenticated(true);
-    navigate("/");
+
+    try {
+      const signupReq = await fetch(`http://localhost:5000/api/auth/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+          name: formData.fullName,
+          userName: formData.userName,
+        }),
+      });
+
+      const user = await signupReq.json();
+
+      if (signupReq.status === 201) {
+        localStorage.setItem("accessToken", user.accessToken);
+        localStorage.setItem("isAuthenticated", JSON.stringify(true));
+        setiIsAuthenticated(true);
+
+        window.location.href = "http://localhost:5173";
+      }
+
+      if (signupReq.status !== 200) {
+        console.error("An error Occured");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleChange = (e) => {
@@ -51,22 +78,6 @@ function Signup() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <input
                 type="text"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full px-2 py-1.5 bg-gray-50 border border-gray-300 rounded-sm text-sm"
-              />
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full px-2 py-1.5 bg-gray-50 border border-gray-300 rounded-sm text-sm"
-              />
-              <input
-                type="text"
                 name="fullName"
                 placeholder="Full Name"
                 value={formData.fullName}
@@ -78,6 +89,22 @@ function Signup() {
                 name="userName"
                 placeholder="Username"
                 value={formData.userName}
+                onChange={handleChange}
+                className="w-full px-2 py-1.5 bg-gray-50 border border-gray-300 rounded-sm text-sm"
+              />
+              <input
+                type="text"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full px-2 py-1.5 bg-gray-50 border border-gray-300 rounded-sm text-sm"
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={formData.password}
                 onChange={handleChange}
                 className="w-full px-2 py-1.5 bg-gray-50 border border-gray-300 rounded-sm text-sm"
               />

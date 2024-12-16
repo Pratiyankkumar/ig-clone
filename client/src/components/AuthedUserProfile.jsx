@@ -156,13 +156,16 @@ export default function AuthedUserProfilePage({
           {/* Stats */}
           <div className="flex gap-6 mb-4">
             <div>
-              <span className="font-semibold">{posts.posts.length}</span> posts
+              <span className="font-semibold">{posts?.posts?.length || 0}</span>{" "}
+              posts
             </div>
             <div>
-              <span className="font-semibold">29</span> followers
+              <span className="font-semibold">{authUser.followers.length}</span>{" "}
+              followers
             </div>
             <div>
-              <span className="font-semibold">64</span> following
+              <span className="font-semibold">{authUser.following.length}</span>{" "}
+              following
             </div>
           </div>
 

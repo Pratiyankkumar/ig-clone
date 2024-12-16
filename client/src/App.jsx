@@ -19,7 +19,6 @@ function App() {
     JSON.parse(localStorage.getItem("isAuthenticated")) || false
   );
   const [derivedPost, setDerivedPost] = useState({});
-  // eslint-disable-next-line no-unused-vars
   const [counter, setCounter] = useState(0);
   const [visibleUpload, setVisibleUpload] = useState(false);
   const [extend, setExtend] = useState(false);

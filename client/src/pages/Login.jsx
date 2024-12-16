@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import Error from "../components/Error";

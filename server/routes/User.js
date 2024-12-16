@@ -129,4 +129,102 @@ router.post("/user/unsave/:id", authMiddleware, async (req, res) => {
   }
 });
 
+router.post("/user/follow/:userId", authMiddleware, async (req, res) => {
+  try {
+    const [userFollowed, authedUser] = await Promise.all([
+      User.findById(req.params.userId),
+      User.findById(req.user._id),
+    ]);
+
+    if (!userFollowed || !authedUser) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    if (
+      authedUser.following.some(
+        (f) => f.userId.toString() === req.params.userId
+      )
+    ) {
+      throw new Error("You are already following this user");
+    }
+
+    authedUser.following.push({ userId: req.params.userId });
+    await authedUser.save();
+
+    userFollowed.followers.push({ userId: req.user._id });
+    await userFollowed.save();
+
+    res.send({
+      message: "Followed successfully",
+      following: authedUser.following,
+      followers: authedUser.followers,
+    });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+});
+
+router.get("/user/isfollowing/:userId", authMiddleware, async (req, res) => {
+  try {
+    const authedUser = await User.findById(req.user._id);
+
+    if (!authedUser) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    if (
+      authedUser.following.some(
+        (f) => f.userId.toString() === req.params.userId
+      )
+    ) {
+      return res.send({ following: true });
+    }
+
+    res.send({ following: false });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+});
+
+router.post("/user/unfollow/:userId", authMiddleware, async (req, res) => {
+  try {
+    const [userUnfollowed, authedUser] = await Promise.all([
+      User.findById(req.params.userId),
+      User.findById(req.user._id),
+    ]);
+
+    if (!userUnfollowed || !authedUser) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    if (
+      authedUser.following.some(
+        (f) => f.userId.toString() !== req.params.userId
+      )
+    ) {
+      throw new Error("You have already unfollowed this user");
+    }
+
+    // Update the followers list of the user being unfollowed
+    userUnfollowed.followers = userUnfollowed.followers.filter(
+      (follower) => follower.userId.toString() !== req.user._id.toString()
+    );
+    await userUnfollowed.save();
+
+    // Update the following list of the authenticated user
+    authedUser.following = authedUser.following.filter(
+      (follow) => follow.userId.toString() !== req.params.userId.toString()
+    );
+    await authedUser.save();
+
+    res.send({
+      message: "Unfollowed successfully",
+      following: authedUser.following,
+      followers: userUnfollowed.followers,
+    });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+});
+
 module.exports = router;

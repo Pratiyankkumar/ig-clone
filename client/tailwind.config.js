@@ -15,6 +15,9 @@ export default {
       backgroundColor: {
         primary: "#3797F0",
       },
+      colors: {
+        primary: "#3797F0",
+      },
     },
   },
   plugins: [],
