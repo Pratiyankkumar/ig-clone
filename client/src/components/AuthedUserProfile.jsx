@@ -16,6 +16,8 @@ export default function AuthedUserProfilePage({
   setDoComment,
   setExtend,
   extend,
+  setFollowPopup,
+  setFollowArray,
 }) {
   // eslint-disable-next-line no-unused-vars
   const [image, setImage] = useState(null);
@@ -159,11 +161,23 @@ export default function AuthedUserProfilePage({
               <span className="font-semibold">{posts?.posts?.length || 0}</span>{" "}
               posts
             </div>
-            <div>
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                setFollowArray(authUser?.followers || []);
+                setFollowPopup(true);
+              }}
+            >
               <span className="font-semibold">{authUser.followers.length}</span>{" "}
               followers
             </div>
-            <div>
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                setFollowArray(authUser?.following || []);
+                setFollowPopup(true);
+              }}
+            >
               <span className="font-semibold">{authUser.following.length}</span>{" "}
               following
             </div>

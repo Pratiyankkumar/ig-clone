@@ -21,6 +21,8 @@ function App() {
   const [counter, setCounter] = useState(0);
   const [visibleUpload, setVisibleUpload] = useState(false);
   const [extend, setExtend] = useState(false);
+  const [followPopup, setFollowPopup] = useState(false);
+  const [followArray, setFollowArray] = useState([]);
 
   // console.log(derivedPost);
 
@@ -40,6 +42,10 @@ function App() {
           setVisibleUpload,
           extend,
           setExtend,
+          followPopup,
+          setFollowPopup,
+          followArray,
+          setFollowArray,
         }}
       >
         <Routes>

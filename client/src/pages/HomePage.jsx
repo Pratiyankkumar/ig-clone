@@ -5,6 +5,7 @@ import CommentSection from "../components/CommentSection";
 import UploadUI from "../components/Upload";
 import { useContext } from "react";
 import { PostContext } from "../App";
+import SeeFollows from "../components/SeeFollows";
 
 function HomePage() {
   const {
@@ -18,6 +19,9 @@ function HomePage() {
     isAuthenticated,
     extend,
     setExtend,
+    followPopup,
+    setFollowPopup,
+    followArray,
   } = useContext(PostContext);
 
   if (!isAuthenticated) return <p>Please first authenticate</p>;
@@ -26,6 +30,12 @@ function HomePage() {
 
   return (
     <div className="flex min-h-screen bg-white">
+      <SeeFollows
+        followPopup={followPopup}
+        followArray={followArray}
+        setFollowPopup={setFollowPopup}
+      />
+
       {/* Left Sidebar */}
       <LeftSidebar
         setVisibleUpload={setVisibleUpload}

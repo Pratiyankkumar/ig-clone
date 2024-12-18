@@ -11,7 +11,15 @@ import { PostContext } from "../App";
 const token = localStorage.getItem("accessToken");
 
 function Profile() {
-  const { derivedPost, setDerivedPost, setExtend } = useContext(PostContext);
+  const {
+    derivedPost,
+    setDerivedPost,
+    setExtend,
+    followPopup,
+    setFollowPopup,
+    followArray,
+    setFollowArray,
+  } = useContext(PostContext);
 
   const [selectButton, setSelectButton] = useState("posts");
 
@@ -33,6 +41,10 @@ function Profile() {
         derivedPost={derivedPost}
         setDerivedPost={setDerivedPost}
         setExtend={setExtend}
+        followPopup={followPopup}
+        setFollowPopup={setFollowPopup}
+        followArray={followArray}
+        setFollowArray={setFollowArray}
       />
     );
   }
@@ -42,6 +54,10 @@ function Profile() {
       derivedPost={derivedPost}
       setDerivedPost={setDerivedPost}
       setExtend={setExtend}
+      followPopup={followPopup}
+      setFollowPopup={setFollowPopup}
+      followArray={followArray}
+      setFollowArray={setFollowArray}
     />
   );
 }

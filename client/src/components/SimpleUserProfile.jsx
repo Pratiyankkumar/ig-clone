@@ -9,7 +9,13 @@ import { useEffect, useState } from "react";
 
 const token = localStorage.getItem("accessToken");
 
-function SimpleUserProfile({ derivedPost, setDerivedPost, setExtend }) {
+function SimpleUserProfile({
+  derivedPost,
+  setDerivedPost,
+  setExtend,
+  setFollowPopup,
+  setFollowArray,
+}) {
   const { id: userId } = useParams();
 
   const { posts, isLoading } = useGetUsersPost(userId, token);
@@ -100,13 +106,25 @@ function SimpleUserProfile({ derivedPost, setDerivedPost, setExtend }) {
             <div>
               <span className="font-semibold">{posts?.length || 0}</span> posts
             </div>
-            <div>
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                setFollowArray(user?.followers || []);
+                setFollowPopup(true);
+              }}
+            >
               <span className="font-semibold mr-1">
                 {user?.followers?.length || 0}
               </span>
               followers
             </div>
-            <div>
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                setFollowArray(user?.following || []);
+                setFollowPopup(true);
+              }}
+            >
               <span className="font-semibold mr-1">
                 {user?.following?.length || 0}
               </span>
