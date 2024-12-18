@@ -227,4 +227,39 @@ router.post("/user/unfollow/:userId", authMiddleware, async (req, res) => {
   }
 });
 
+router.get("/user/search/:searchedQuery", authMiddleware, async (req, res) => {
+  try {
+    const searchQuery = req.params.searchedQuery;
+
+    // Create a case-insensitive regular expression for the search
+    const searchRegex = new RegExp(searchQuery, "i");
+
+    // Find users where either username or name matches the search query
+    const users = await User.find({
+      $or: [{ username: searchRegex }, { name: searchRegex }],
+    })
+      .select("_id userName name profilePic followers") // Added _id to selection
+      .limit(10);
+
+    if (!users.length) {
+      return res.status(200).json({
+        success: true,
+        message: "No users found",
+        users: [],
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      users,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error searching for users",
+      error: error.message,
+    });
+  }
+});
+
 module.exports = router;

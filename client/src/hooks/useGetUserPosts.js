@@ -18,6 +18,10 @@ export function useGetUsersPost(userId, token) {
         }
       );
 
+      if (postsReq.status === 404) {
+        return setPosts([]);
+      }
+
       const fetchedPosts = await postsReq.json();
 
       setPosts(fetchedPosts);

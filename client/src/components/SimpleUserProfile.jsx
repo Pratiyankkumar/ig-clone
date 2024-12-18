@@ -98,7 +98,7 @@ function SimpleUserProfile({ derivedPost, setDerivedPost, setExtend }) {
           {/* Stats */}
           <div className="flex gap-6 mb-4">
             <div>
-              <span className="font-semibold">{posts.length || 0}</span> posts
+              <span className="font-semibold">{posts?.length || 0}</span> posts
             </div>
             <div>
               <span className="font-semibold mr-1">

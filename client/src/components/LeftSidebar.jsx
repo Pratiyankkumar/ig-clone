@@ -12,12 +12,14 @@ import {
 } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuthUser } from "../hooks/GetAuthUser";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import SearchUsers from "./SearchUsers";
 
 function LeftSidebar({ setiIsAuthenticated, setVisibleUpload }) {
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
   const { authUser } = useAuthUser(token);
+  const [searchIsOpen, setSearchIsOpen] = useState(false);
 
   useEffect(() => {
     if (!token) {
@@ -40,7 +42,7 @@ function LeftSidebar({ setiIsAuthenticated, setVisibleUpload }) {
   }
 
   return (
-    <div className="hidden w-64 fixed top-0 bottom-0 left-0 flex-col gap-2 border-r p-4 lg:flex">
+    <div className="hidden w-64 fixed top-0 bottom-0 left-0 flex-col z-20 gap-2 border-r p-4 lg:flex">
       <div className="mb-8 px-2">
         <h1 className="text-2xl font-semibold">Instagram</h1>
       </div>
@@ -52,13 +54,13 @@ function LeftSidebar({ setiIsAuthenticated, setVisibleUpload }) {
           <Home className="h-6 w-6" />
           <span className="text-sm font-medium">Home</span>
         </NavLink>
-        <NavLink
-          to="/search"
-          className="flex items-center gap-4 rounded-md px-2 py-2 text-gray-700 hover:bg-gray-100"
+        <li
+          className="flex items-center cursor-pointer gap-4 rounded-md px-2 py-2 text-gray-700 hover:bg-gray-100"
+          onClick={() => setSearchIsOpen(true)}
         >
           <Search className="h-6 w-6" />
           <p className="text-sm font-medium">Search</p>
-        </NavLink>
+        </li>
         <NavLink
           to="/explore"
           className="flex items-center gap-4 rounded-md px-2 py-2 text-gray-700 hover:bg-gray-100"
@@ -109,6 +111,11 @@ function LeftSidebar({ setiIsAuthenticated, setVisibleUpload }) {
           <span className="text-sm font-medium">Log out</span>
         </button>
       </nav>
+
+      <SearchUsers
+        searchIsOpen={searchIsOpen}
+        setSearchIsOpen={setSearchIsOpen}
+      />
     </div>
   );
 }

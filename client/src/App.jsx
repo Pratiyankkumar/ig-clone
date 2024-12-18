@@ -3,7 +3,6 @@ import Login from "./pages/Login";
 import HomePage from "./pages/HomePage";
 import Signup from "./pages/Signup";
 import Feed from "./components/Feed";
-import Search from "./components/Search";
 import { createContext, useState } from "react";
 import ExplorePage from "./components/Explore";
 import MessagesPage from "./components/Message";
@@ -47,7 +46,6 @@ function App() {
           {/* Root Path */}
           <Route path="/" element={<HomePage />}>
             <Route index element={<Feed />} /> {/* Renders at `/` */}
-            <Route path="search" element={<Search />} />
             <Route path="explore" element={<ExplorePage />} />
             <Route path="reels" element={<p>reels</p>} />
             <Route path="messages" element={<MessagesPage />} />
