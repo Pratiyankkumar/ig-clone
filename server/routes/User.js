@@ -193,16 +193,25 @@ router.post("/user/unfollow/:userId", authMiddleware, async (req, res) => {
       User.findById(req.user._id),
     ]);
 
+    // Check if either user doesn't exist
     if (!userUnfollowed || !authedUser) {
       return res.status(404).send({ message: "User not found" });
     }
 
-    if (
-      authedUser.following.some(
-        (f) => f.userId.toString() !== req.params.userId
-      )
-    ) {
-      throw new Error("You have already unfollowed this user");
+    // Check if trying to unfollow self
+    if (req.params.userId === req.user._id.toString()) {
+      return res.status(400).send({ message: "Cannot unfollow yourself" });
+    }
+
+    // Check if already not following
+    const isFollowing = authedUser.following.some(
+      (f) => f.userId.toString() === req.params.userId
+    );
+
+    if (!isFollowing) {
+      return res
+        .status(400)
+        .send({ message: "You are not following this user" });
     }
 
     // Update the followers list of the user being unfollowed
@@ -223,7 +232,8 @@ router.post("/user/unfollow/:userId", authMiddleware, async (req, res) => {
       followers: userUnfollowed.followers,
     });
   } catch (err) {
-    res.status(500).send({ message: err.message });
+    console.error("Unfollow error:", err);
+    res.status(500).send({ message: "Server error while unfollowing user" });
   }
 });
 
