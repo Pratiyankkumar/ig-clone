@@ -61,7 +61,11 @@ function SeeFollows({ followPopup, setFollowPopup, followArray }) {
           )}
           {isLoading && <ModernLoader />}
           {follows.map((follow) => (
-            <UserInfo user={follow} key={follow._id} />
+            <UserInfo
+              setFollowPopup={setFollowPopup}
+              user={follow}
+              key={follow._id}
+            />
           ))}
         </div>
       </div>

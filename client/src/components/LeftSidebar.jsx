@@ -42,7 +42,7 @@ function LeftSidebar({ setiIsAuthenticated, setVisibleUpload }) {
   }
 
   return (
-    <div className="hidden w-64 fixed top-0 bottom-0 left-0 flex-col z-20 gap-2 border-r p-4 lg:flex">
+    <div className="hidden w-64 fixed top-0 z-10 bottom-0 left-0 flex-col gap-2 border-r p-4 lg:flex">
       <div className="mb-8 px-2">
         <h1 className="text-2xl font-semibold">Instagram</h1>
       </div>

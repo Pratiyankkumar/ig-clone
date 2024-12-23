@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { PostContext } from "../App";
+import { useMain } from "../Contexts/MainContext";
 
 function Signup() {
-  const { setiIsAuthenticated } = useContext(PostContext);
+  const { setiIsAuthenticated } = useMain();
 
   const [formData, setFormData] = useState({
     email: "",

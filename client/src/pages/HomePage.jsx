@@ -3,8 +3,7 @@ import { Outlet } from "react-router-dom";
 import LeftSidebar from "../components/LeftSidebar";
 import CommentSection from "../components/CommentSection";
 import UploadUI from "../components/Upload";
-import { useContext } from "react";
-import { PostContext } from "../App";
+import { useMain } from "../Contexts/MainContext";
 import SeeFollows from "../components/SeeFollows";
 
 function HomePage() {
@@ -22,7 +21,7 @@ function HomePage() {
     followPopup,
     setFollowPopup,
     followArray,
-  } = useContext(PostContext);
+  } = useMain();
 
   if (!isAuthenticated) return <p>Please first authenticate</p>;
 
@@ -42,7 +41,7 @@ function HomePage() {
         setiIsAuthenticated={setiIsAuthenticated}
       />
       {/* Main Content */}
-      <main className="flex-1 w-full items-center justify-center ml-64 border-r">
+      <main className="flex-1 w-full items-center justify-center md:ml-64 ml-0 border-r">
         <Outlet /> {/* Renders the content for the current route */}
         {extend && (
           <CommentSection

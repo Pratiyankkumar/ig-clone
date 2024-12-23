@@ -6,7 +6,7 @@ import { ModernLoader } from "../components/ModernLoader";
 import { useContext, useState } from "react";
 import AuthedUserProfilePage from "../components/AuthedUserProfile";
 import SimpleUserProfile from "../components/SimpleUserProfile";
-import { PostContext } from "../App";
+import { useMain } from "../Contexts/MainContext";
 
 const token = localStorage.getItem("accessToken");
 
@@ -19,7 +19,7 @@ function Profile() {
     setFollowPopup,
     followArray,
     setFollowArray,
-  } = useContext(PostContext);
+  } = useMain();
 
   const [selectButton, setSelectButton] = useState("posts");
 

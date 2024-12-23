@@ -3,51 +3,19 @@ import Login from "./pages/Login";
 import HomePage from "./pages/HomePage";
 import Signup from "./pages/Signup";
 import Feed from "./components/Feed";
-import { createContext, useState } from "react";
 import ExplorePage from "./components/Explore";
 import MessagesPage from "./components/Message";
 import Profile from "./pages/Profile";
+import { MainProvider } from "./Contexts/MainContext";
 
 // import ImageUpload from "./components/ImageUpload";
 
-export const PostContext = createContext();
-
 function App() {
-  const [doComment, setDoComment] = useState(false);
-  const [isAuthenticated, setiIsAuthenticated] = useState(
-    JSON.parse(localStorage.getItem("isAuthenticated")) || false
-  );
-  const [derivedPost, setDerivedPost] = useState({});
-  const [counter, setCounter] = useState(0);
-  const [visibleUpload, setVisibleUpload] = useState(false);
-  const [extend, setExtend] = useState(false);
-  const [followPopup, setFollowPopup] = useState(false);
-  const [followArray, setFollowArray] = useState([]);
-
   // console.log(derivedPost);
 
   return (
     <BrowserRouter>
-      <PostContext.Provider
-        value={{
-          doComment,
-          setDoComment,
-          isAuthenticated,
-          setiIsAuthenticated,
-          derivedPost,
-          setDerivedPost,
-          counter,
-          setCounter,
-          visibleUpload,
-          setVisibleUpload,
-          extend,
-          setExtend,
-          followPopup,
-          setFollowPopup,
-          followArray,
-          setFollowArray,
-        }}
-      >
+      <MainProvider>
         <Routes>
           {/* Root Path */}
           <Route path="/" element={<HomePage />}>
@@ -64,7 +32,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="*" element={<p>Page not found :(</p>} />
         </Routes>
-      </PostContext.Provider>
+      </MainProvider>
     </BrowserRouter>
   );
 }

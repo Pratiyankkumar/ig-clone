@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useAuthUser } from "../hooks/GetAuthUser";
 import FollowButton from "./FollowButton";
+import { Link } from "react-router-dom";
 
 const token = localStorage.getItem("accessToken");
 
 /* eslint-disable react/prop-types */
-const UserInfo = ({ user }) => {
+const UserInfo = ({ user, setFollowPopup }) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -95,7 +96,13 @@ const UserInfo = ({ user }) => {
         className="w-10 ml-4 h-10 rounded-full"
       />
       <div className="flex flex-col ml-4">
-        <p className="font-semibold text-sm">{user.userName}</p>
+        <Link
+          onClick={() => setFollowPopup(false)}
+          to={`profile/${user._id}`}
+          className="font-semibold text-sm"
+        >
+          {user.userName}
+        </Link>
         <p className="text-sm text-gray-500">
           {user.name} <span>&sdot;</span>
           <span className="ml-[2px]">{user?.followers?.length} Followers</span>

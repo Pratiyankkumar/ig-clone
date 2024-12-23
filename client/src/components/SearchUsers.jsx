@@ -63,7 +63,7 @@ export default function SearchUsers({ searchIsOpen, setSearchIsOpen }) {
 
   return (
     <div
-      className={`w-[400px] h-full bg-white shadow-md fixed top-0 overflow-auto 
+      className={`w-[400px]  h-full bg-white shadow-md fixed top-0 overflow-auto 
       transition-all duration-300 ease-in-out
       ${searchIsOpen ? "left-64 opacity-100" : "-left-[400px] opacity-0"}
       flex flex-col rounded-e-lg`}
