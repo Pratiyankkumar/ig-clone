@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import Post from "./Post";
 import Stories from "./Stories";
 import RightSidebar from "./RightSidebar";

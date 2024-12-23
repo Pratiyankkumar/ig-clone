@@ -113,7 +113,7 @@ function CommentSection({ setDoComment, derivedPost, setCounter, setExtend }) {
   if (isLoading) {
     return (
       <div
-        className="w-full h-screen flex items-center justify-center fixed top-0 right-0"
+        className="w-full h-screen flex items-center justify-center z-40 fixed top-0 right-0"
         style={{ backgroundColor: "rgba(62, 62, 62, 0.5)" }}
       >
         <div className="bg-white rounded-lg">
@@ -158,7 +158,7 @@ function CommentSection({ setDoComment, derivedPost, setCounter, setExtend }) {
 
   return (
     <div
-      className="w-full h-screen flex items-center justify-center fixed top-0 right-0"
+      className="w-full h-screen flex items-center justify-center fixed z-40 top-0 right-0"
       style={{ backgroundColor: "rgba(62, 62, 62, 0.5)" }}
     >
       <X

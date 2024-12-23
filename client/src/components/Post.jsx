@@ -7,7 +7,7 @@ import {
   MoreHorizontal,
   Send,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { formatTimeDiff } from "../utils/formatTimeDiff";
 import useGetUser from "../hooks/GetUser";
@@ -18,7 +18,7 @@ import { useAuthUser } from "../hooks/GetAuthUser";
 
 const token = localStorage.getItem("accessToken");
 
-function Post({
+const Post = memo(function Post({
   caption,
   createdAt,
   likes = [],
@@ -286,6 +286,6 @@ function Post({
       </div>
     </div>
   );
-}
+});
 
 export default Post;
