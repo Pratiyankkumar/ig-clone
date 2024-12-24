@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { Outlet } from "react-router-dom";
 import LeftSidebar from "../components/LeftSidebar";
 import CommentSection from "../components/CommentSection";
@@ -6,6 +5,7 @@ import UploadUI from "../components/Upload";
 import { useMain } from "../Contexts/MainContext";
 import SeeFollows from "../components/SeeFollows";
 import { useAuth } from "../Contexts/AuthContext";
+import { useUi } from "../Contexts/UiContext";
 
 function HomePage() {
   const {
@@ -13,16 +13,14 @@ function HomePage() {
     setDoComment,
     derivedPost,
     setCounter,
-    visibleUpload,
-    setVisibleUpload,
-    extend,
-    setExtend,
     followPopup,
     setFollowPopup,
     followArray,
   } = useMain();
 
   const { isAuthenticated, setiIsAuthenticated } = useAuth();
+
+  const { extend, setExtend, visibleUpload, setVisibleUpload } = useUi();
 
   if (!isAuthenticated) return <p>Please first authenticate</p>;
 

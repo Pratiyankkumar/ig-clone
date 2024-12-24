@@ -8,8 +8,7 @@ function MainProvider({ children }) {
 
   const [derivedPost, setDerivedPost] = useState({});
   const [counter, setCounter] = useState(0);
-  const [visibleUpload, setVisibleUpload] = useState(false);
-  const [extend, setExtend] = useState(false);
+
   const [followPopup, setFollowPopup] = useState(false);
   const [followArray, setFollowArray] = useState([]);
 
@@ -21,24 +20,12 @@ function MainProvider({ children }) {
       setDerivedPost,
       counter,
       setCounter,
-      visibleUpload,
-      setVisibleUpload,
-      extend,
-      setExtend,
       followPopup,
       setFollowPopup,
       followArray,
       setFollowArray,
     };
-  }, [
-    counter,
-    derivedPost,
-    doComment,
-    visibleUpload,
-    extend,
-    followPopup,
-    followArray,
-  ]);
+  }, [counter, derivedPost, doComment, followPopup, followArray]);
 
   return <MainContext.Provider value={value}>{children}</MainContext.Provider>;
 }

@@ -6,6 +6,7 @@ import { useContext, useState } from "react";
 import AuthedUserProfilePage from "../components/AuthedUserProfile";
 import SimpleUserProfile from "../components/SimpleUserProfile";
 import { useMain } from "../Contexts/MainContext";
+import { useUi } from "../Contexts/UiContext";
 
 const token = localStorage.getItem("accessToken");
 
@@ -13,12 +14,13 @@ function Profile() {
   const {
     derivedPost,
     setDerivedPost,
-    setExtend,
     followPopup,
     setFollowPopup,
     followArray,
     setFollowArray,
   } = useMain();
+
+  const { setExtend } = useUi();
 
   const [selectButton, setSelectButton] = useState("posts");
 
