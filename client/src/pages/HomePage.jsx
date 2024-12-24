@@ -27,7 +27,7 @@ function HomePage() {
   // console.log(derivedPost);
 
   return (
-    <div className="flex min-h-screen bg-white">
+    <div className="flex min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white">
       <SeeFollows
         followPopup={followPopup}
         followArray={followArray}
