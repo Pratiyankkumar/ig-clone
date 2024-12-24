@@ -272,4 +272,51 @@ router.get("/user/search/:searchedQuery", authMiddleware, async (req, res) => {
   }
 });
 
+router.get("/users/story", authMiddleware, async (req, res) => {
+  try {
+    // Get the logged-in user's ID from the auth middleware
+    const userId = req.user._id;
+
+    // Find the logged-in user to get their following list
+    const loggedInUser = await User.findById(userId).populate({
+      path: "following.userId",
+      select: "story name userName", // Include the story, name, and userName fields
+    });
+
+    if (!loggedInUser || !loggedInUser.following) {
+      return res.status(404).json({ message: "No following users found." });
+    }
+
+    // Extract stories from the following users
+    const stories = loggedInUser.following
+      .map((follow) => {
+        // Check if the user has uploaded any stories
+        const userStories = follow.userId.story;
+        if (userStories && userStories.length > 0) {
+          return userStories.map((story) => ({
+            userName: follow.userId.userName,
+            name: follow.userId.name,
+            profilePic: follow.userId.profilePic,
+            story,
+          }));
+        }
+        return null;
+      })
+      .filter((story) => story !== null) // Filter out users with no stories
+      .flat(); // Flatten the array if multiple users have stories
+
+    // Return the stories if found
+    if (stories.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No stories found in following users." });
+    }
+
+    res.status(200).json({ stories });
+  } catch (error) {
+    console.error("Error retrieving stories:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

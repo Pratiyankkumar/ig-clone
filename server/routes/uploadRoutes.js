@@ -3,7 +3,7 @@
 const express = require("express");
 const multer = require("multer");
 const authMiddleware = require("../middleware/authMiddleware");
-const { uploadImage } = require("../controllers/uploadController");
+const { uploadImage, uploadStory } = require("../controllers/uploadController");
 const User = require("../models/User");
 const Post = require("../models/Post");
 
@@ -64,6 +64,31 @@ router.post("/upload/post", authMiddleware, upload, async (req, res) => {
     res
       .status(500)
       .json({ error: "Failed to upload image", details: err.message });
+  }
+});
+
+router.post("/upload/story", authMiddleware, upload, async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send({ message: "No file uploaded" });
+    }
+
+    const file = req.file;
+    const publicUrl = await uploadStory(file, "story");
+
+    const user = await User.findById(req.user._id);
+
+    user.story.push({
+      userId: req.user._id,
+      story: publicUrl,
+      text: req.body.text,
+    });
+
+    await user.save();
+
+    res.status(201).send(user.story);
+  } catch (err) {
+    res.status(500).send({ message: "An error Occured" });
   }
 });
 

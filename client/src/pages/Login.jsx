@@ -1,10 +1,10 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Error from "../components/Error";
-import { useMain } from "../Contexts/MainContext";
+import { useAuth } from "../Contexts/AuthContext";
 
 function Login() {
-  const { setiIsAuthenticated } = useMain();
+  const { setiIsAuthenticated } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

@@ -56,6 +56,27 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
+  story: [
+    {
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "User", // Adjust to match your user model name
+      },
+      story: {
+        type: String,
+        required: true,
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now, // Automatically sets the timestamp
+        expires: 86400, // 24 hours in seconds
+      },
+      text: {
+        type: String,
+      },
+    },
+  ],
 });
 
 const User = mongoose.model("User", userSchema);

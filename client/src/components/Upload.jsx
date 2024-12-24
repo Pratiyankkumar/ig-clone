@@ -106,7 +106,7 @@ function UploadUI({ setVisibleUpload }) {
 
   return (
     <div
-      className="w-full h-screen flex items-center justify-center fixed top-0 right-0"
+      className="w-full h-screen flex items-center justify-center z-20 fixed top-0 right-0"
       style={{ backgroundColor: "rgba(62, 62, 62, 0.5)" }}
     >
       <X

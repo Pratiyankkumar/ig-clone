@@ -5,23 +5,24 @@ import CommentSection from "../components/CommentSection";
 import UploadUI from "../components/Upload";
 import { useMain } from "../Contexts/MainContext";
 import SeeFollows from "../components/SeeFollows";
+import { useAuth } from "../Contexts/AuthContext";
 
 function HomePage() {
   const {
-    setiIsAuthenticated,
     doComment,
     setDoComment,
     derivedPost,
     setCounter,
     visibleUpload,
     setVisibleUpload,
-    isAuthenticated,
     extend,
     setExtend,
     followPopup,
     setFollowPopup,
     followArray,
   } = useMain();
+
+  const { isAuthenticated, setiIsAuthenticated } = useAuth();
 
   if (!isAuthenticated) return <p>Please first authenticate</p>;
 
